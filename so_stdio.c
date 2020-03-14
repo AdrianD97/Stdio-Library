@@ -5,6 +5,7 @@
 #include <sys/wait.h>
 
 #include "so_stdio.h"
+#include "utils.h"
 
 /* va retine pid-ul procesului copil
  * pentru a putea mai tarziu sa asteptam
