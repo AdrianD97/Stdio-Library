@@ -1,0 +1,53 @@
+Nume: Ștefan Adrian-Daniel
+Grupa: 334CA
+
+Tema 2 - Bibliotecă stdio
+
+Organizare
+Pentru aceasta tema, cel mai important lucru care trebuie explicat este structura 
+SO_FILE(deoarce toate functiile se bazeaza pe aceasta structura). Asa ca voi detalia 
+continutul structurii. Structura contine urmatoarele campuri(alese astfel incat sa 
+indeplinesc cerintele temei):
+	- file_descriptor -> indexul in table de fisere deschise care identifica instanta 
+	de fisier deschisa.
+	- index -> indexul caracterului curent, disponibil din buffer-ul structurii. Acesta 
+	identifica pozitia caracterului care se va obtine in urma unei operatii de 
+	so_fgetc/so_fread (so_fread se bazeaza pe so_fgetc in implementarea sa). In cazul 
+	unei operatii de scriere(so_fputc/so_fwrite, so_fwrite se bazeaza pe so_fputc in 
+	implementare), acest camp identifica prima poziti disponibila din buffer in care 
+	se poate aduaga un caracter.
+	- current_position -> identifica pozitia curenta din fisier(este mai degraba o 
+	pseudo-pozitie, deoarece structura face buffering). Avand acest camp, implementarea 
+	functiei so_ftell presupune intoarcerea acestei valori.
+	- last_op_type -> identifica tipul ultimei operatii realizate pe fisier(citire/scriere). 
+	Campul este util in implementarea functiilor so_fflush, so_fgetc, so_fputc, so_fseek.
+	- err_flag -> indica faptul daca a aparut sau nu o eroare cand s-a realizat o operatie 
+	pe instanta de fisier deschisa. Deci implementarea functiei so_feof se rezuma la intoarcerea 
+	acestei valori.
+	- eof -> indica daca s-a ajuns la sfarsitul fisierului. Sfaristul fisierului este atins 
+	cand am citit toate datele din fisier sau ne-am pozitionat printr-un so_fseek la sfarsit.
+	- mode -> modul in care a fost deschis fisierul. Camp util pentru a semnala o eroare daca 
+	se incearca citirea dintr-un fisier care a fost deschis doar pentr scriere(w, a) sau daca 
+	se incearca scrierea intr-un fisier care a fost deschis doar pentru citire(r) sau pentru 
+	a muta cursorul la sfarsitul fisierului(cand se incearca o operatie de write) daca fisierul 
+	a fost dsechis in modul append(si anterior s-au realizat operatii de so_fseek).
+	- buffer -> buffer-ul asociat structurii pe care se realizeaza operatiile propriu-zise de 
+	citire si scriere.
+
+De mentionat si faptul ca in fisierul so_stdio.c exista o variabila globala (child_pid) care 
+este populata daca so_popen s-a realizat cu succes si care este utilizata de functia so_pclose 
+pentru a permite inchiderea procesului creat de so_popen dupa ce acesta si-a facut treaba.
+
+Trebuie sa mentionez: la prima tema m-am plans destul de mult, in schimb la aceasta chiar mi-a facut placere sa lucrez la ea.
+
+Implementare
+Toate functiile a fost implementate.
+Lucruri interesante descoperite pe parcurs: existenta functiei popen() care face atat 
+de multe lucruri pentru noi.
+
+Compilare
+	make -> compilează biblioteca dinamică libso_stdio.so
+
+Git
+	https://github.com/AdrianD97/Stdio-Library -> momentan repo-ul este privat, dar 
+	va deveni public dupa primirea rezultatelor temei sau dupa deadline-ul hard (ma mai gandesc).

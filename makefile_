@@ -1,0 +1,5 @@
+build: test.c so_stdio.c
+	gcc -Wall $^
+
+clean:
+	rm a.out
