@@ -240,6 +240,7 @@ int so_fputc(int c, SO_FILE *stream)
 			return SO_EOF;
 		}
 
+		stream->eof = EOF_;
 		stream->current_position = pos;
 	}
 
