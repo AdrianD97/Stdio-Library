@@ -87,11 +87,6 @@ int so_fseek(SO_FILE *stream, long offset, int whence)
 		whence = SEEK_SET;
 	}
 
-	if (whence == SEEK_END && offset == 0)
-		stream->eof = EOF_;
-	else
-		stream->eof = NO_EOF_;
-
 	pos = lseek(stream->file_descriptor, offset, whence);
 	if (pos < 0) {
 		stream->err_flag = ERR;
@@ -240,7 +235,6 @@ int so_fputc(int c, SO_FILE *stream)
 			return SO_EOF;
 		}
 
-		stream->eof = EOF_;
 		stream->current_position = pos;
 	}
 

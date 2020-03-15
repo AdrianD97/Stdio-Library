@@ -7,4 +7,4 @@ so_stdio.o: so_stdio.c
 	gcc -fPIC -c $^ -o $@
 
 clean:
-	rm *.o libso_stdio.so
+	rm *.o

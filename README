@@ -25,7 +25,7 @@ indeplinesc cerintele temei):
 	pe instanta de fisier deschisa. Deci implementarea functiei so_feof se rezuma la intoarcerea 
 	acestei valori.
 	- eof -> indica daca s-a ajuns la sfarsitul fisierului. Sfaristul fisierului este atins 
-	cand am citit toate datele din fisier sau ne-am pozitionat printr-un so_fseek la sfarsit.
+	cand am citit toate datele din fisier(apelul read a intors 0).
 	- mode -> modul in care a fost deschis fisierul. Camp util pentru a semnala o eroare daca 
 	se incearca citirea dintr-un fisier care a fost deschis doar pentr scriere(w, a) sau daca 
 	se incearca scrierea intr-un fisier care a fost deschis doar pentru citire(r) sau pentru 
