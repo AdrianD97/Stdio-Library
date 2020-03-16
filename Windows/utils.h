@@ -26,6 +26,8 @@
 
 #define CMD_SIZE 500
 
+#define INVALID_HANDLE	-1
+
 struct _so_file {
 	/*
 	 *	handle-ul prin care este
@@ -56,6 +58,16 @@ struct _so_file {
 
 	/* indica faptul daca s-a ajuns la sfarsitul fisierului */
 	int eof;
+
+	/*
+	 * va retine informatii despre procesul copil
+	 * creat (doar pentru functia so_popen)
+	 * pentru a putea mai tarziu sa asteptam ca acesta
+	 * sa se termine(WaitForSingleObject are nevoie de
+	 * handle-ul procesului pe care il asteptam sa-si
+	 * incheie executia)
+	 */
+	PROCESS_INFORMATION proc_child_info;
 
 	/* modul in care a fost deschis fisierul */
 	char mode[SIZE];

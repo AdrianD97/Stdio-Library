@@ -5,15 +5,6 @@
 #include "utils.h"
 
 /*
- * va retine informatii despre procesul copil creat
- * pentru a putea mai tarziu sa asteptam ca acesta
- * sa se termine(WaitForSingleObject are nevoie de
- * handle-ul procesului pe care il asteptam sa-si
- * incheie executia)
- */
-PROCESS_INFORMATION proc_child_info;
-
-/*
  * intoarce modul in care
  * se doreste sa se deschida fisierul.
  */
@@ -160,6 +151,8 @@ SO_FILE *so_fopen(const char *pathname, const char *mode)
 	file->last_op_type = NO_OPERATION;
 	file->err_flag = NOT_ERR;
 	file->eof = NO_EOF_;
+	file->proc_child_info.hProcess = INVALID_HANDLE;
+	file->proc_child_info.hThread = INVALID_HANDLE;
 	strcpy(file->mode, mode);
 	strcpy(file->buffer, "");
 
@@ -523,7 +516,6 @@ SO_FILE *so_popen(const char *command, const char *type)
 	}
 
 	CloseHandle(handle_c);
-	proc_child_info = pi;
 
 	file = (SO_FILE *)malloc(sizeof(SO_FILE));
 	if (!file) {
@@ -537,6 +529,8 @@ SO_FILE *so_popen(const char *command, const char *type)
 	file->last_op_type = NO_OPERATION;
 	file->err_flag = NOT_ERR;
 	file->eof = NO_EOF_;
+	file->proc_child_info.hProcess = pi.hProcess;
+	file->proc_child_info.hThread = pi.hThread;
 	strcpy(file->mode, type);
 	strcpy(file->buffer, "");
 
@@ -548,9 +542,13 @@ int so_pclose(SO_FILE *stream)
 	int res;
 	DWORD ret;
 	BOOL status;
+	PROCESS_INFORMATION proc_child_info;
 
-	if (!proc_child_info.hProcess || !proc_child_info.hThread)
+	if (stream->proc_child_info.hProcess == INVALID_HANDLE
+		|| stream->proc_child_info.hThread == INVALID_HANDLE)
 		return SO_EOF;
+
+	proc_child_info = stream->proc_child_info;
 
 	res = so_fclose(stream);
 	if (res < 0)
