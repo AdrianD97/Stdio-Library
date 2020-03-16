@@ -26,6 +26,9 @@ indeplinesc cerintele temei):
 	acestei valori.
 	- eof -> indica daca s-a ajuns la sfarsitul fisierului. Sfaristul fisierului este atins 
 	cand am citit toate datele din fisier(apelul read a intors 0).
+	- child_pid -> este populat daca so_popen s-a realizat cu succes si care este utilizat
+	de functia so_pclose pentru a permite inchiderea procesului creat de so_popen dupa ce
+	acesta si-a facut treaba.
 	- mode -> modul in care a fost deschis fisierul. Camp util pentru a semnala o eroare daca 
 	se incearca citirea dintr-un fisier care a fost deschis doar pentr scriere(w, a) sau daca 
 	se incearca scrierea intr-un fisier care a fost deschis doar pentru citire(r) sau pentru 
@@ -33,10 +36,6 @@ indeplinesc cerintele temei):
 	a fost dsechis in modul append(si anterior s-au realizat operatii de so_fseek).
 	- buffer -> buffer-ul asociat structurii pe care se realizeaza operatiile propriu-zise de 
 	citire si scriere.
-
-De mentionat si faptul ca in fisierul so_stdio.c exista o variabila globala (child_pid) care 
-este populata daca so_popen s-a realizat cu succes si care este utilizata de functia so_pclose 
-pentru a permite inchiderea procesului creat de so_popen dupa ce acesta si-a facut treaba.
 
 Trebuie sa mentionez: la prima tema m-am plans destul de mult, in schimb la aceasta chiar mi-a facut placere sa lucrez la ea.
 

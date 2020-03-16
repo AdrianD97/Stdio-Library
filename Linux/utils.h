@@ -23,6 +23,8 @@
 #define EOF_	1
 #define NO_EOF_	0
 
+#define INVALID_PID	-1
+
 struct _so_file {
 	/*
 	 *	file descriptorul prin care este
@@ -53,6 +55,14 @@ struct _so_file {
 
 	/* indica faptul daca s-a ajuns la sfarsitul fisierului */
 	int eof;
+
+	/* va retine pid-ul procesului copil
+	 * pentru a putea mai tarziu sa asteptam
+	 * ca acesta sa se termine (waitpid are nevoie
+	 * de pid-ul procesului pe care il asteptam
+	 * sa-si incheie executia)
+	 */
+	pid_t child_pid;
 
 	/* modul in care a fost deschis fisierul */
 	char mode[SIZE];

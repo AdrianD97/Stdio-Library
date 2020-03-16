@@ -7,14 +7,6 @@
 #include "so_stdio.h"
 #include "utils.h"
 
-/* va retine pid-ul procesului copil
- * pentru a putea mai tarziu sa asteptam
- * ca acesta sa se termine (waitpid are nevoie
- * de pid-ul procesului pe care il asteptam
- * sa-si incheie executia)
- */
-pid_t child_pid;
-
 /* intoarce flagul/flagurile cu care
  * se doreste sa se deschida fiserul.
  */
@@ -122,6 +114,7 @@ SO_FILE *so_fopen(const char *pathname, const char *mode)
 	file->last_op_type = NO_OPERATION;
 	file->err_flag = NOT_ERR;
 	file->eof = NO_EOF_;
+	file->child_pid = INVALID_PID;
 	strcpy(file->mode, mode);
 	strcpy(file->buffer, "");
 
@@ -440,8 +433,6 @@ SO_FILE *so_popen(const char *command, const char *type)
 		fd = fds[1];
 	}
 
-	child_pid = pid;
-
 	file = (SO_FILE *)malloc(sizeof(SO_FILE));
 	if (!file) {
 		close(fd);
@@ -454,6 +445,7 @@ SO_FILE *so_popen(const char *command, const char *type)
 	file->last_op_type = NO_OPERATION;
 	file->err_flag = NOT_ERR;
 	file->eof = NO_EOF_;
+	file->child_pid = pid;
 	strcpy(file->mode, type);
 	strcpy(file->buffer, "");
 
@@ -463,15 +455,18 @@ SO_FILE *so_popen(const char *command, const char *type)
 int so_pclose(SO_FILE *stream)
 {
 	int res, status;
+	pid_t pid;
 
-	if (!child_pid)
+	if (stream->child_pid == INVALID_PID)
 		return SO_EOF;
+
+	pid = stream->child_pid;
 
 	res = so_fclose(stream);
 	if (res < 0)
 		return SO_EOF;
 
-	res = waitpid(child_pid, &status, 0);
+	res = waitpid(pid, &status, 0);
 
 	if (res < 0)
 		return SO_EOF;
