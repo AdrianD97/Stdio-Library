@@ -151,8 +151,8 @@ SO_FILE *so_fopen(const char *pathname, const char *mode)
 	file->last_op_type = NO_OPERATION;
 	file->err_flag = NOT_ERR;
 	file->eof = NO_EOF_;
-	file->proc_child_info.hProcess = INVALID_HANDLE;
-	file->proc_child_info.hThread = INVALID_HANDLE;
+	file->proc_child_info.hProcess = INVALID_HANDLE_VALUE;
+	file->proc_child_info.hThread = INVALID_HANDLE_VALUE;
 	strcpy(file->mode, mode);
 	strcpy(file->buffer, "");
 
@@ -544,8 +544,8 @@ int so_pclose(SO_FILE *stream)
 	BOOL status;
 	PROCESS_INFORMATION proc_child_info;
 
-	if (stream->proc_child_info.hProcess == INVALID_HANDLE
-		|| stream->proc_child_info.hThread == INVALID_HANDLE)
+	if (stream->proc_child_info.hProcess == INVALID_HANDLE_VALUE
+		|| stream->proc_child_info.hThread == INVALID_HANDLE_VALUE)
 		return SO_EOF;
 
 	proc_child_info = stream->proc_child_info;

@@ -26,8 +26,6 @@
 
 #define CMD_SIZE 500
 
-#define INVALID_HANDLE	-1
-
 struct _so_file {
 	/*
 	 *	handle-ul prin care este
