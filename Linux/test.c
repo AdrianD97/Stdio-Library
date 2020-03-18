@@ -5,6 +5,9 @@
 #include <fcntl.h>
 
 #include "so_stdio.h"
+#include "utils.h"
+
+#define INVALID_FILE_DESCRIPTOR	-1
 
 void test_SO_FILE_structure()
 {
