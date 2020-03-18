@@ -26,7 +26,7 @@
 
 #define CMD_SIZE 500
 
-typedef struct _so_file {
+struct _so_file {
 	/*
 	 *	handle-ul prin care este
 	 *	identificata instanta de fisier deschisa.
@@ -75,6 +75,6 @@ typedef struct _so_file {
 	 *	operatiile de citire, respectiv de scriere
 	 */
 	char buffer[BUFF_SIZE];
-} SO_FILE;
+};
 
 #endif /* UTILS_H */
