@@ -1,6 +1,8 @@
 #include <string.h>
 #include <windows.h>
 
+#define DLL_EXPORTS
+
 #include "so_stdio.h"
 #include "utils.h"
 
