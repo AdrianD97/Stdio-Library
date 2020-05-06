@@ -45,7 +45,7 @@ Lucruri interesante descoperite pe parcurs: existenta functiei popen() care face
 de multe lucruri pentru noi.
 
 Compilare
-	make -> compileaza biblioteca dinamica so_stdio.dll
+	nmake -> compileaza biblioteca dinamica so_stdio.dll
 
 Git
 	https://github.com/AdrianD97/Stdio-Library -> momentan repo-ul este privat, dar 
